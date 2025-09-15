@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab8 - Grupo [LETRA]</title>
+
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f4f6f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .dashboard-header {
+        background-color: #2c3e50;
+        color: white;
+        padding: 30px;
+        text-align: left;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .dashboard-title {
+        margin: 0;
+        font-size: 36px;
+        font-weight: 700;
+      }
+      .lead {
+        font-size: 20px;
+        color: #ecf0f1;
+        margin-top: 10px;
+      }
+      #chart-header {
+        display: flex;
+        align-items: left;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 800px;
+      }
+      #chart-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+      }
+      #chart {
+        width: 100%;
+        max-width: 800px;
+        height: 500px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+      }
+      #back-button {
+        display: none;
+        margin-top: 20px;
+        padding: 12px;
+        font-size: 16px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+      }
+      #back-button:hover {
+        background-color: #2980b9;
+      }
+      #lineChart {
+        width: 100%;
+        max-width: 1000px;
+        height: 400px;
+        margin: 50px auto 0 auto;
+        display: none;
+      }
+      .card {
+        margin: 40px auto;
+        border: none;
+        overflow: hidden;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .card-header {
+        background-color: #34495e;
+        color: white;
+        padding: 20px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .card-body {
+        padding: 30px;
+        font-size: 16px;
+        color: #7f8c8d;
+        line-height: 1.6;
+      }
+      .header-info {
+        padding: 20px 50px;
+        background-color: #a4dceb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header-info">
+      <table style="width: 100%; border: 0">
+        <tbody>
+          <tr>
+            <td style="text-align: left; vertical-align: top">
+              <table style="border: 0">
+                <tbody>
+                  <tr>
+                    <td style="width: 70px">
+                      <img
+                        src="https://maxmcz.github.io/visualizacao-de-dados_exemplo/UFCG_logo_png.png"
+                        alt="Brasão UFCG"
+                        style="margin-top: 5px; height: 62px"
+                      />
+                    </td>
+                    <td>
+                      <div style="line-height: 1.4">
+                        <div>
+                          <strong
+                            >UNIVERSIDADE FEDERAL DE CAMPINA GRANDE -
+                            UFCG</strong
+                          >
+                        </div>
+                        <div>
+                          CENTRO DE ENGENHARIA ELÉTRICA E INFORMÁTICA - CEEI
+                        </div>
+                        <div>
+                          UNIDADE ACADÊMICA DE SISTEMAS E COMPUTAÇÃO - UASC
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+
+            <td style="text-align: right; vertical-align: top">
+              <div>Disciplina: Visualização de Dados</div>
+              <div>Professor: Maxwell Guimarães de Oliveira</div>
+              <div>Período: 2025.1</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="header">
+      <h2 style="text-align: center">
+        Projeto de Visualização Interativa de Dados
+      </h2>
+      <h4 style="text-align: center">
+        <u>Grupo A</u>: Caíque Campelo, Diego Cruz, Gabriel Cesário, Igor Souza,
+        Pedro Costa &nbsp; &nbsp;
+      </h4>
+      <h2 style="text-align: center">
+        <span
+          style="
+            font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+          "
+        >
+          <strong
+            >Evolução Global do Desenvolvimento Humano e Econômico
+            (1990-2021)</strong
+          >
+        </span>
+      </h2>
+      <p style="text-align: justify; padding: 10px 50px 10px 50px">
+        Os dados revelam o avanço global no bem-estar e na economia ao longo das
+        últimas décadas. Entre 1990 e 2021, o IDH mostra crescimento quase
+        contínuo, com países desenvolvidos mantendo índices altos, enquanto
+        América Latina, Oriente Médio, África e Sul da Ásia apresentam
+        progressos, embora em ritmos desiguais. Conflitos e crises interrompem
+        essa evolução em pontos específicos. Já o PIB, de 1960 a 2018, evidencia
+        expansão mundial expressiva, marcada por liderança inicial de EUA,
+        Europa e Japão, seguida pela ascensão recente da China e de outras
+        economias emergentes. Em conjunto, os gráficos indicam que riqueza e
+        desenvolvimento humano tendem a caminhar juntos, mas dependem também de
+        fatores sociais, políticos e institucionais para gerar qualidade de vida
+        ampla.
+      </p>
+    </div>
+
+    <div id="container" style="max-width: 100%; padding: 10px 50px 10px 50px">
+      <div style="text-align: center; margin-bottom: 20px">
+        <label for="indicatorSelect"><strong>Indicador:</strong></label>
+        <select id="indicatorSelect" style="margin-left: 10px">
+          <option value="idh" selected>IDH</option>
+          <option value="pib">PIB</option>
+        </select>
+
+        <div
+          style="
+            width: 20%;
+            max-width: 1000px;
+            margin: auto;
+            text-align: center;
+          "
+        >
+          <label for="yearSlider"><strong>Selecione o ano:</strong></label
+          ><br />
+          <input
+            id="yearSlider"
+            type="range"
+            step="1"
+            value="1990"
+            oninput="document.getElementById('yearLabel').textContent = this.value"
+            style="width: 100%; margin-top: 10px"
+          />
+          <div id="yearLabel" style="margin-top: 5px; font-weight: bold">
+            1990
+          </div>
+        </div>
+        <button id="playButton" style="margin-top: 10px; display: none">
+          ▶️ Play
+        </button>
+
+        <div
+          id="chart"
+          style="width: 100%; max-width: 1000px; height: 600px; margin: auto"
+        ></div>
+
+        <div
+          id="lineChart"
+          style="
+            width: 100%;
+            max-width: 1000px;
+            height: 400px;
+            margin: 50px auto 0 auto;
+          "
+        ></div>
+      </div>
+    </div>
+
+    <div id="footer" style="height: 2%; margin-top: 150px">
+      <p style="text-align: justify; padding: 20px 50px 0px 50px">
+        <b>Dicas para interagir com a visualização</b>:
+      </p>
+      <ul style="padding: 0px 50px 10px 75px">
+        <li>
+          Passe o mouse sobre um país para ver o valor do IDH ou do PIB no ano
+          selecionado.
+        </li>
+        <li>
+          Clique em um país para abrir um gráfico com a evolução desse indicador
+          ao longo dos anos.
+        </li>
+        <li>
+          Use o scroll do mouse para aproximar ou afastar (zoom in/out) o mapa.
+        </li>
+        <li>
+          Segure o botão esquerdo do mouse e arraste para mover o mapa e
+          explorar outras regiões.
+        </li>
+        <li>
+          Combine o zoom e o arrasto para focar em áreas específicas ou comparar
+          diferentes países.
+        </li>
+      </ul>
+    </div>
+
+    <script
+      type="text/javascript"
+      src="https://fastly.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
+    ></script>
+
+    <!-- Uncomment this line if you want to dataTool extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/extension/dataTool.min.js"></script>
+  -->
+    <!-- Uncomment this line if you want to use gl extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+  -->
+    <!-- Uncomment this line if you want to echarts-stat extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+  -->
+    <script
+      type="text/javascript"
+      src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"
+    ></script>
+
+    <!-- Uncomment these two lines if you want to use bmap extension
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/extension/bmap.min.js"></script>
+  -->
+
+    <script>
+      const chart = echarts.init(document.getElementById("chart"));
+      const slider = document.getElementById("yearSlider");
+      const playButton = document.getElementById("playButton");
+      let isPlaying = false;
+      let playInterval = null;
+
+      function renderMap(year, allData, indicator, selectedCountries) {
+        const data = allData[indicator][year] || [];
+        chart.setOption({
+          title: {
+            text:
+              (indicator === "idh" ? "IDH" : "PIB per capita") +
+              " por país (" +
+              year +
+              ")",
+            left: "center",
+          },
+          tooltip: {
+            trigger: "item",
+            formatter: function (params) {
+              if (!params.value) return params.name + ": Sem dados";
+
+              const unit =
+                indicator === "idh" ? " (Índice)" : " (US$ per capita)";
+              const value =
+                indicator === "idh"
+                  ? params.value.toFixed(3) // deixa claro que é índice
+                  : params.value.toLocaleString("en-US"); // separador de milhar para PIB
+
+              return `<b>${
+                params.name
+              }</b><br/>${indicator.toUpperCase()}: ${value}${unit}`;
+            },
+          },
+          visualMap:
+            indicator === "idh"
+              ? {
+                  min: 0.3,
+                  max: 0.95,
+                  splitNumber: 6,
+                  text: ["Maior IDH", "Menor IDH"],
+                  calculable: true,
+                  inRange: {
+                    color: [
+                      "#d73027",
+                      "#fc8d59",
+                      "#fee08b",
+                      "#d9ef8b",
+                      "#91cf60",
+                      "#1a9850",
+                    ],
+                  },
+                }
+              : {
+                  min: 500,
+                  max: 80000,
+                  text: ["Maior PIB", "Menor PIB"],
+                  calculable: true,
+                  splitNumber: 7,
+                  inRange: {
+                    color: [
+                      "#5e3c99",
+                      "#3288bd",
+                      "#66c2a5",
+                      "#abdda4",
+                      "#e6f598",
+                    ],
+                  },
+                },
+          series: [
+            {
+              name: indicator.toUpperCase(),
+              type: "map",
+              map: "world",
+              roam: true,
+              selectedMode: false,
+              emphasis: {
+                label: { show: true },
+                itemStyle: {
+                  areaColor: null,
+                  borderColor: null,
+                  borderWidth: 0,
+                },
+              },
+
+              data: data.map((item) => ({
+                name: item.name,
+                value: item.value,
+                itemStyle: selectedCountries.has(item.name)
+                  ? {
+                      areaColor: "#ffa500",
+                      borderColor: "#ff8c00",
+                      borderWidth: 2,
+                    }
+                  : {}, // destaque se estiver selecionado
+              })),
+            },
+          ],
+        });
+      }
+
+      fetch("data.json")
+        .then((response) => response.json())
+        .then((allData) => {
+          const lineChart = echarts.init(document.getElementById("lineChart"));
+          const indicatorSelect = document.getElementById("indicatorSelect");
+          let selectedCountries = new Set();
+
+          function update() {
+            const indicator = indicatorSelect.value;
+
+            // descobrir os anos disponíveis para o indicador selecionado
+            const years = Object.keys(allData[indicator])
+              .map(Number)
+              .sort((a, b) => a - b);
+
+            // atualizar min, max e value do slider
+            slider.min = years[0];
+            slider.max = years[years.length - 1];
+            if (slider.value < slider.min || slider.value > slider.max) {
+              slider.value = slider.min; // força para o início se estiver fora do intervalo
+            }
+
+            const year = slider.value;
+            document.getElementById("yearLabel").textContent = year;
+
+            renderMap(year, allData, indicator, selectedCountries);
+          }
+
+          update();
+
+          slider.addEventListener("input", update);
+          playButton.addEventListener("click", () => {
+            const indicator = indicatorSelect.value;
+            const years = Object.keys(allData[indicator])
+              .map(Number)
+              .sort((a, b) => a - b);
+
+            if (!isPlaying) {
+              isPlaying = true;
+              playButton.textContent = "⏸️ Pausar";
+              playInterval = setInterval(() => {
+                let currentYear = parseInt(slider.value, 10);
+                const maxYear = parseInt(slider.max, 10);
+
+                if (currentYear < maxYear) {
+                  slider.value = currentYear + 1;
+                } else {
+                  slider.value = slider.min;
+                }
+
+                document.getElementById("yearLabel").textContent = slider.value;
+                renderMap(slider.value, allData, indicator, selectedCountries);
+              }, 1000); // 1000ms = 1 segundo por ano
+            } else {
+              isPlaying = false;
+              playButton.textContent = "▶️ Play";
+              clearInterval(playInterval);
+            }
+          });
+
+          indicatorSelect.addEventListener("change", () => {
+            update();
+
+            if (selectedCountries.size > 0) {
+              const indicator = indicatorSelect.value;
+              const years = Object.keys(allData[indicator]).sort();
+              const series = [];
+
+              selectedCountries.forEach((countryName) => {
+                const values = years.map((year) => {
+                  const entry = allData[indicator][year].find(
+                    (d) => d.name === countryName
+                  );
+                  return entry ? entry.value : null;
+                });
+
+                series.push({
+                  name: countryName,
+                  type: "line",
+                  data: values,
+                  smooth: true,
+                  lineStyle: { width: 2 },
+                  showSymbol: false,
+                  markLine: {
+                    silent: true,
+                    symbol: "none",
+                    label: {
+                      formatter: function (params) {
+                        if (params.data?.xAxis === "2008")
+                          return "Crise de 2008";
+                        if (params.data?.xAxis === "2020") return "COVID-19";
+                        return "";
+                      },
+                      position: "insideStartBottom",
+                      color: "#c0392b",
+                      fontWeight: "bold",
+                    },
+                    lineStyle: {
+                      color: "#c0392b",
+                      type: "dashed",
+                      width: 2,
+                    },
+                    data: [
+                      { xAxis: "2008", value: 2008 },
+                      { xAxis: "2020", value: 2020 },
+                    ],
+                  },
+                });
+              });
+
+              lineChart.setOption(
+                {
+                  title: {
+                    text: `Evolução do ${indicator.toUpperCase()}`,
+                    left: "center",
+                  },
+                  tooltip: {
+                    trigger: "axis",
+                    formatter: function (params) {
+                      const unit =
+                        indicator === "idh" ? " (Índice)" : " (US$ per capita)";
+                      return params
+                        .map(
+                          (p) =>
+                            `${p.seriesName} - ${p.axisValue}: <b>${
+                              p.data !== null ? p.data + unit : "Sem dados"
+                            }</b>`
+                        )
+                        .join("<br/>");
+                    },
+                  },
+                  legend: {
+                    top: 30,
+                  },
+                  xAxis: { type: "category", data: years },
+                  yAxis: { type: "value" },
+                  series,
+                },
+                { notMerge: true }
+              );
+
+              document.getElementById("lineChart").style.display = "block";
+              lineChart.resize();
+            } else {
+              lineChart.clear();
+              document.getElementById("lineChart").style.display = "none";
+            }
+          });
+
+          chart.on("click", function (params) {
+            const country = params.name;
+            const indicator = indicatorSelect.value;
+
+            if (selectedCountries.has(country)) {
+              selectedCountries.delete(country);
+            } else {
+              selectedCountries.add(country);
+            }
+
+            // Atualiza o mapa para refletir visualmente os países selecionados
+            renderMap(slider.value, allData, indicator, selectedCountries);
+
+            const years = Object.keys(allData[indicator]).sort();
+            const series = [];
+
+            selectedCountries.forEach((countryName) => {
+              const values = years.map((year) => {
+                const entry = allData[indicator][year].find(
+                  (d) => d.name === countryName
+                );
+                return entry ? entry.value : null;
+              });
+
+              series.push({
+                name: countryName,
+                type: "line",
+                data: values,
+                smooth: true,
+                lineStyle: { width: 2 },
+                showSymbol: false,
+                markLine: {
+                  silent: true,
+                  symbol: "none",
+                  label: {
+                    formatter: ({ data }) => {
+                      return data.xAxis === "2008"
+                        ? "Crise de 2008"
+                        : data.xAxis === "2020"
+                        ? "COVID-19"
+                        : "";
+                    },
+                    position: "insideStartBottom",
+                    color: "#c0392b",
+                    fontWeight: "bold",
+                  },
+                  lineStyle: {
+                    color: "#c0392b",
+                    type: "dashed",
+                    width: 2,
+                  },
+                  data: [
+                    { xAxis: "2008", value: 2008 },
+                    { xAxis: "2020", value: 2020 },
+                  ],
+                },
+              });
+            });
+
+            if (series.length === 0) {
+              lineChart.clear();
+              document.getElementById("lineChart").style.display = "none";
+            } else {
+              lineChart.setOption(
+                {
+                  title: {
+                    text: `Evolução do ${indicator.toUpperCase()}`,
+                    left: "center",
+                  },
+                  tooltip: {
+                    trigger: "axis",
+                    formatter: function (params) {
+                      const unit =
+                        indicator === "idh" ? " (Índice)" : " (US$ per capita)";
+                      return params
+                        .map(
+                          (p) =>
+                            `${p.seriesName} - ${p.axisValue}: <b>${
+                              p.data !== null ? p.data + unit : "Sem dados"
+                            }</b>`
+                        )
+                        .join("<br/>");
+                    },
+                  },
+                  legend: {
+                    top: 30,
+                  },
+                  xAxis: { type: "category", data: years },
+                  yAxis: { type: "value" },
+                  series,
+                },
+                { notMerge: true }
+              );
+
+              document.getElementById("lineChart").style.display = "block";
+              lineChart.resize();
+            }
+          });
+
+          renderMap(slider.value, allData, indicator, selectedCountries); // atualiza mapa com seleção visual
+
+          window.addEventListener("resize", () => {
+            chart.resize();
+            lineChart.resize();
+          });
+        });
+    </script>
+  </body>
+</html>
